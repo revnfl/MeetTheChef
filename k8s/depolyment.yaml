@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laravel
+  template:
+    metadata:
+      labels:
+        app: laravel
+    spec:
+      containers:
+        - name: laravel
+          image: laravel-app:latest # Build dan push sendiri ke Docker
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: laravel-config
+            - secretRef:
+                name: laravel-secret
+          volumeMounts:
+            - mountPath: /var/www/html/storage
+              name: laravel-storage
+      volumes:
+        - name: laravel-storage
+          persistentVolumeClaim:
+            claimName: laravel-pvc
