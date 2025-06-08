@@ -28,16 +28,16 @@ spec:
             - name: shared-code
               mountPath: /var/www/html
 
-        - name: nginx
-          image: nginx:latest
-          ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: shared-code
-              mountPath: /var/www/html
-            - name: nginx-config
-              mountPath: /etc/nginx/conf.d/default.conf
-              subPath: nginx.conf
+        # - name: nginx
+        #   image: nginx:latest
+        #   ports:
+        #     - containerPort: 80
+        #   volumeMounts:
+        #     - name: shared-code
+        #       mountPath: /var/www/html
+        #     - name: nginx-config
+        #       mountPath: /etc/nginx/conf.d/default.conf
+        #       subPath: default.conf
 
       volumes:
         - name: chef-storage
@@ -45,6 +45,6 @@ spec:
             claimName: chef-pvc
         - name: shared-code
           emptyDir: {}
-        - name: nginx-config
-          configMap:
-            name: nginx-conf
+        # - name: nginx-config
+        #   configMap:
+        #     name: nginx-conf

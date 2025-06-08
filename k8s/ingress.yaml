@@ -1,18 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: chef-ingress
+  name: meetthechef-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: meetthechef.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: chef-service
-                port:
-                  number: 80
+  - host: meetthechef.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: chef-service
+            port:
+              number: 80
