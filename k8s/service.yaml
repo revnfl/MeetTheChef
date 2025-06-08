@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chef-service
+spec:
+  selector:
+    app: meetthechef
+  ports:
+    - protocol: TCP
+      port: 80        # port service di dalam cluster
+      targetPort: 80  # port container nginx
+  type: ClusterIP

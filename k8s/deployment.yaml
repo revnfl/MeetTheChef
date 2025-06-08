@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meetthechef-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meetthechef
+  template:
+    metadata:
+      labels:
+        app: meetthechef
+    spec:
+      containers:
+        - name: php
+          image: revnfl/meetthechef:latest
+          ports:
+            - containerPort: 9000
+          envFrom:
+            - configMapRef:
+                name: chef-config
+            - secretRef:
+                name: chef-secret
+          volumeMounts:
+            - name: chef-storage
+              mountPath: /var/www/uploads
+            - name: shared-code
+              mountPath: /var/www/html
+
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-code
+              mountPath: /var/www/html
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: nginx.conf
+
+      volumes:
+        - name: chef-storage
+          persistentVolumeClaim:
+            claimName: chef-pvc
+        - name: shared-code
+          emptyDir: {}
+        - name: nginx-config
+          configMap:
+            name: nginx-conf

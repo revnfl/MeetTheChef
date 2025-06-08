@@ -1,19 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: laravel-ingress
+  name: chef-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: laravel.local
+    - host: meetthechef.local
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: laravel-service
+                name: chef-service
                 port:
                   number: 80
-

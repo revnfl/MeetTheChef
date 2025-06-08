@@ -1,7 +1,8 @@
 FROM php:8.2-fpm
 
-# Install dependencies
+# Install dependencies PHP & Nginx
 RUN apt-get update && apt-get install -y \
+    nginx \
     zip unzip git curl libpng-dev libonig-dev libxml2-dev libzip-dev \
     && docker-php-ext-install pdo_mysql zip
 
@@ -9,10 +10,22 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
+
 COPY . .
 
 RUN composer install --optimize-autoloader --no-dev
 
-EXPOSE 9000
-CMD ["php-fpm"]
+RUN php artisan storage:link
 
+# Build frontend assets jika perlu
+RUN apt-get install -y nodejs npm
+RUN npm install && npm run build
+
+# Copy konfigurasi nginx
+COPY ./nginx/nginx.conf /etc/nginx/sites-enabled/default
+
+# Expose port 80 (HTTP)
+EXPOSE 80
+
+# Jalankan PHP-FPM dan Nginx secara bersamaan
+CMD ["sh", "-c", "nginx -g 'daemon off;' & php-fpm"]
