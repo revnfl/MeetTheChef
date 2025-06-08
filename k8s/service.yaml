@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: laravel-service
 spec:
-  type: ClusterIP
   selector:
     app: laravel
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
+  type: NodePort  # ← ubah dari ClusterIP ke NodePort

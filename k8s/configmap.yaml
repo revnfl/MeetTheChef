@@ -3,6 +3,10 @@ kind: ConfigMap
 metadata:
   name: laravel-config
 data:
-  APP_ENV: local
-  APP_DEBUG: "true"
-  APP_NAME: "MeetTheChef"
+  APP_ENV: production
+  APP_DEBUG: "false"
+  APP_URL: "http://meetthechef.local"
+  DB_HOST: mysql
+  DB_PORT: "3306"
+  DB_DATABASE: meetthechef
+  DB_USERNAME: laravel
